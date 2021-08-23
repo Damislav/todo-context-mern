@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/auth/authContext";
@@ -14,6 +14,7 @@ import { alpha, makeStyles } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import { Button } from "@material-ui/core";
+import ThemeContext from "../../context/theme/themeContext";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -75,7 +76,8 @@ const Navbar = ({ title, icon }) => {
   const classes = useStyles();
   const authContext = useContext(AuthContext);
   const contactContext = useContext(ContactContext);
-
+  const themeContext = useContext(ThemeContext);
+  const { theme, toggleTheme } = themeContext;
   const { isAuthenticated, logout, user, loadUser } = authContext;
   const { clearContacts } = contactContext;
 
@@ -119,18 +121,24 @@ const Navbar = ({ title, icon }) => {
       </Link>
     </>
   );
-  const [state, setState] = React.useState({
-    checkedA: true,
-    checkedB: true,
+  const [state, setState] = useState({
+    checkedA: "light",
+    checkedB: "dark",
   });
-
+  const handleCheckbox = () => {
+    if (theme === "light") {
+      toggleTheme("dark");
+    } else {
+      toggleTheme("light");
+    }
+  };
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar color={!theme ? "default" : "primary"} position="static">
         <Toolbar>
           <IconButton
             edge="start"
@@ -143,7 +151,10 @@ const Navbar = ({ title, icon }) => {
           <Typography className={classes.title} variant="h6" noWrap>
             Todoist
           </Typography>
-          <Switch inputProps={{ "aria-label": "primary checkbox" }} />
+          <Switch
+            onClick={() => toggleTheme()}
+            inputProps={{ "aria-label": "primary checkbox" }}
+          />
           <ul style={{ display: "flex" }}>
             {isAuthenticated ? authLinks : guestLinks}
           </ul>

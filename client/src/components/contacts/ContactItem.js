@@ -1,20 +1,44 @@
-import React, { useContext, useState } from "react";
-import PropTypes from "prop-types";
+import React, { useContext, useEffect, useState } from "react";
+
 import ContactContext from "../../context/contact/contactContext";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { Box, Button, IconButton } from "@material-ui/core";
+import DoneIcon from "@material-ui/icons/Done";
+import { Box, Button, TextField } from "@material-ui/core";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import EditIcon from "@material-ui/icons/Edit";
-const ContactItem = ({ contact }) => {
-  const [toggle, setToggle] = useState(true);
+const ContactItem = ({ todo }) => {
+  // CONTEXT STATE
   const contactContext = useContext(ContactContext);
-  const { text, _id, email } = contact;
-  const { deleteContact, setCurrent, clearCurrent } = contactContext;
+  const { deleteContact, updateContact, getContacts } = contactContext;
+
+  const { _id, text } = todo;
+
+  const [todos, setTodos] = useState({
+    text: "",
+    completed: false,
+    _id: _id,
+  });
+  useEffect(() => {
+    getContacts();
+  }, [todos, getContacts]);
+  // OWN STATE
+  const [canEdit, setCanEdit] = useState(true);
+  const [toggle, setToggle] = useState(true);
+
+  const handleEdit = (e) => {
+    e.preventDefault();
+    setCanEdit(!canEdit);
+    updateContact(todos);
+    getContacts();
+  };
   const onDelete = () => {
     deleteContact(_id);
-    clearCurrent();
   };
 
+  const handleComplete = (e) => {
+    setTodos({
+      completed: !todos.completed,
+    });
+  };
   return (
     <Box
       boxShadow={1}
@@ -30,7 +54,26 @@ const ContactItem = ({ contact }) => {
         onClick={() => setToggle(!toggle)}
         className="text-primary text-left toggle"
       >
-        {text}
+        {/* ştatic */}
+        {canEdit ? (
+          <form onSubmit={handleEdit} noValidate autoComplete="off">
+            <TextField
+              value={text}
+              disabled={canEdit}
+              name="text"
+              placeholder="Enter your todo"
+            />
+          </form>
+        ) : (
+          <form onSubmit={handleEdit} noValidate autoComplete="off">
+            <TextField
+              placeholder={text}
+              onChange={(e) => setTodos({ ...todos, text: e.target.value })}
+              value={todos.text}
+              name="text"
+            />
+          </form>
+        )}
       </h3>
 
       <ul className={`${toggle ? "accordion" : ""} list `}></ul>
@@ -44,27 +87,19 @@ const ContactItem = ({ contact }) => {
         <div
           style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}
         >
-          <Button onClick={() => setCurrent(contact)}>
+          <Button onClick={handleEdit}>
             <EditIcon />
           </Button>
           <Button onClick={onDelete}>
             <DeleteOutlineIcon />
-          </Button>{" "}
-          {/* <IconButton
-            onClick={() => setToggle(!toggle)}
-            style={{ float: "right" }}
-            aria-label="more"
-            aria-controls="long-menu"
-            aria-haspopup="true"
-          >
-            <MoreVertIcon />
-          </IconButton> */}
+          </Button>
+          <Button onClick={handleComplete}>
+            <DoneIcon />
+          </Button>
         </div>
       </div>
     </Box>
   );
 };
-ContactItem.propTypes = {
-  contact: PropTypes.object.isRequired,
-};
+
 export default ContactItem;

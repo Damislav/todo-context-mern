@@ -41,14 +41,14 @@ export default (state, action) => {
         current: action.payload,
         loading: false,
       };
-    case UPDATE_TODO:
-      return {
-        ...state,
-        contacts: state.contacts.map((contact) => {
-          return contact.id === action.payload.id ? action.payload : contact;
-        }),
-        loading: false,
-      };
+    // case UPDATE_TODO:
+    //   return {
+    //     ...state,
+    //     contacts: state.contacts.map((contact) => {
+    //       return contact.id === action.payload.id ? action.payload : contact;
+    //     }),
+    //     loading: false,
+    //   };
 
     case CLEAR_CURRENT:
       return {

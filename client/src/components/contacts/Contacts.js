@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import ContactContext from "../../context/contact/contactContext";
 import ContactItem from "../contacts/ContactItem";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
@@ -12,7 +12,7 @@ const Contacts = () => {
     getContacts();
     // eslint-disable-next-line
   }, []);
-  
+
   if (contacts !== null && contacts.length === 0 && !loading) {
     return <h4>Please add a contact</h4>;
   }
@@ -23,22 +23,14 @@ const Contacts = () => {
         {contacts !== null && !loading ? (
           <TransitionGroup>
             {filtered !== null
-              ? filtered.map((contact) => (
-                  <CSSTransition
-                    key={contact._id}
-                    timeout={500}
-                    classNames="item"
-                  >
-                    <ContactItem contact={contact} />
+              ? filtered.map((todo) => (
+                  <CSSTransition key={todo._id} timeout={500} classNames="item">
+                    <ContactItem todo={todo} />
                   </CSSTransition>
                 ))
-              : contacts.map((contact) => (
-                  <CSSTransition
-                    key={contact._id}
-                    timeout={500}
-                    classNames="item"
-                  >
-                    <ContactItem contact={contact} />
+              : contacts.map((todo) => (
+                  <CSSTransition key={todo._id} timeout={500} classNames="item">
+                    <ContactItem todo={todo} />
                   </CSSTransition>
                 ))}
           </TransitionGroup>

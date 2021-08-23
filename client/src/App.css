@@ -19,7 +19,7 @@ body {
   font-family: "Roboto", sans-serif;
   font-size: 1rem;
   line-height: 1.6;
-  background-color: #fff;
+  height: 100vh;
   color: #333;
 }
 
@@ -443,4 +443,8 @@ table th {
 
 .toggle {
   cursor: pointer;
+}
+
+.complete {
+  border-bottom: 1px solid black;
 }

@@ -11,16 +11,17 @@ import Login from "./auth/Login";
 import AlertState from "./context/alert/AlertState";
 import Alerts from "./components/alerts/Alerts";
 import PrivateRoute from "./routing/PrivateRoute";
-
+import ThemeState from "./context/theme/ThemeState";
 function App() {
   return (
     <AuthState>
       <ContactState>
         <AlertState>
-          <Router>
-            <Fragment>
-              <Navbar />
-              <div className="container">
+          <ThemeState>
+            <Router>
+              <Fragment>
+                <Navbar />
+
                 <Alerts />
                 <Switch>
                   <PrivateRoute exact path="/" component={Home} />
@@ -28,9 +29,9 @@ function App() {
                   <Route exact path="/register" component={Register} />
                   <Route exact path="/login" component={Login} />
                 </Switch>
-              </div>
-            </Fragment>
-          </Router>
+              </Fragment>
+            </Router>
+          </ThemeState>
         </AlertState>
       </ContactState>
     </AuthState>
