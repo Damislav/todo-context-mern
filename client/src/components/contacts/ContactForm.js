@@ -8,7 +8,6 @@ const ContactForm = () => {
   const [contact, setContact] = useState({
     text: "",
     completed: false,
-    
   });
 
   const { text } = contact;
@@ -22,6 +21,10 @@ const ContactForm = () => {
       return alert("Need text");
     }
     addContact(contact);
+    setContact({
+      text: "",
+      completed: false,
+    });
   };
 
   return (

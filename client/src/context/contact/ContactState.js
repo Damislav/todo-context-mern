@@ -100,7 +100,7 @@ const ContactState = (props) => {
     } catch (err) {
       dispatch({
         type: CONTACT_ERROR,
-        payload: err.response.msg,
+        payload: err.response,
       });
     }
   };

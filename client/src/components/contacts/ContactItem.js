@@ -10,7 +10,7 @@ const ContactItem = ({ todo }) => {
   const contactContext = useContext(ContactContext);
   const { deleteContact, updateContact, getContacts } = contactContext;
 
-  const { _id, text } = todo;
+  const { _id, text, completed } = todo;
 
   const [todos, setTodos] = useState({
     text: "",
@@ -36,11 +36,13 @@ const ContactItem = ({ todo }) => {
 
   const handleComplete = (e) => {
     setTodos({
+      ...todos,
       completed: !todos.completed,
     });
   };
   return (
     <Box
+      className={todos.completed && "complete"}
       boxShadow={1}
       style={{
         padding: "1.5rem",
@@ -87,7 +89,7 @@ const ContactItem = ({ todo }) => {
         <div
           style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}
         >
-          <Button onClick={handleEdit}>
+          <Button onClick={() => setCanEdit(!canEdit)}>
             <EditIcon />
           </Button>
           <Button onClick={onDelete}>

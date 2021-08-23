@@ -36,12 +36,12 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { text, type } = req.body;
+    const { text, completed } = req.body;
 
     try {
       const newContact = new Contact({
         text,
-        type,
+        completed,
         //logged in user
         user: req.user.id,
       });
@@ -65,6 +65,7 @@ router.put("/:id", auth, async (req, res) => {
   // Build contact object
   const contactFields = {};
   if (text) contactFields.text = text;
+  if (completed) contactFields.completed = completed;
 
   try {
     let contact = await Contact.findById(req.params.id);
